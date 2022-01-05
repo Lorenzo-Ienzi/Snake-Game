@@ -1,13 +1,10 @@
 body {
-    display: grid;
-    place-items: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     margin: 0;
     padding: 0;
 }
-/* #area { 
-    width: 600px;
-    height: 600px;
-} */
 #game-over{
     font-size: 3rem;
     font-family: "Vibur", sans-serif;
@@ -21,13 +18,34 @@ body {
         0 0 92px #0fa,
         0 0 102px #0fa,
         0 0 151px #0fa;
-    top: 40%;
+    top: 35%;
+    text-transform: uppercase;
     width: auto;
     position: absolute;
     display: none;
 }
 #try-again{
     position: absolute;
-    top: 60%;
+    width: 200px;
+    height: 80px;
+    font-size: 1.5rem;
+    font-family: "Vibur", sans-serif;
+    top: 55%;
     display: none;
+    color: #39ff14;
+    background-color: #111;
+    border: 2px solid #39ff14;
+    text-transform: uppercase;
+    transition: 0.6s;
+}
+#try-again:hover{
+    color:#111;
+    background-color: #39ff14;
+}
+
+@supports (display: grid){
+    body{
+        display: grid;
+        place-items: center;
+    }
 }
