@@ -11,6 +11,12 @@ import Snakepart from "./classes/Snakepart.js"
  let tailLength = 0
  let eatSound = new Audio("gulp.mp3")
 
+ let startTouchX = 0
+ let startTouchY = 0
+ let endTouchX = 0
+ let endTouchY = 0
+ let boundary = 5
+
 function loop() {
     moveSnake()
     if(isGameOver())
@@ -67,6 +73,8 @@ function checkAppleCollision(){
 }
 
 document.body.addEventListener("keydown", ClickArrows)
+document.body.addEventListener("touchstart", touchStart, false)
+document.body.addEventListener("touchend", touchEnd, false)
 
 function ClickArrows(event){
     switch(event.keyCode){
@@ -100,6 +108,52 @@ function ClickArrows(event){
                 break
     }
 }
+
+function swipeScreen(){
+    // up
+    if(endTouchY < startTouchY && (startTouchX - endTouchX < boundary || startTouchX - endTouchX < -boundary )){
+        if(yVelocity=== 1)
+            return
+        yVelocity = -1
+        xVelocity = 0
+    }
+    // down
+    else if(endTouchY > startTouchY && (startTouchX - endTouchX < boundary || startTouchX - endTouchX < -boundary )){
+        if(yVelocity=== -1)
+            return
+        yVelocity = 1
+        xVelocity = 0
+    }
+    // right
+    else if(endTouchX > startTouchX && (-(startTouchY - endTouchY) < -boundary || startTouchY - endTouchY < boundary )){
+        if(xVelocity=== -1)
+            return
+            yVelocity = 0
+            xVelocity = 1
+    }
+    // left
+    else if(endTouchX < startTouchX &&(startTouchY - endTouchY < boundary || startTouchY - endTouchY < -boundary )){
+        if(xVelocity=== 1)
+            return
+            yVelocity = 0
+            xVelocity = -1
+    }
+}
+
+function touchStart(event){
+    console.log(event.changedTouches[0].clientY,"start y")
+    console.log(event.changedTouches[0].clientX, "start x")
+    startTouchX = event.changedTouches[0].clientX
+    startTouchY = event.changedTouches[0].clientY
+}
+function touchEnd(event){
+    console.log(event.changedTouches[0].clientY, "end y")
+    console.log(event.changedTouches[0].clientX, "end x")
+    endTouchX = event.changedTouches[0].clientX
+    endTouchY = event.changedTouches[0].clientY
+    swipeScreen()
+}
+
 function isGameOver(){
     let gameOver = false
     if(xVelocity === 0 && yVelocity === 0)
@@ -124,6 +178,7 @@ function isGameOver(){
     }
     if(gameOver){
         v.gameOverText.style.display = "block";
+        v.tryAgainText.style.display = "block";
     }
     return gameOver
 }
