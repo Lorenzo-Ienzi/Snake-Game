@@ -10,17 +10,21 @@ import Snakepart from "./classes/Snakepart.js"
  let snakeparts = []
  let tailLength = 0
  let eatSound = new Audio("gulp.mp3")
+ let gameOverSound = new Audio("game-over.mp3")
 
  let startTouchX = 0
  let startTouchY = 0
  let endTouchX = 0
  let endTouchY = 0
- let boundary = 5
+ let boundary = 10
+ let score = 0 
 
 function loop() {
     moveSnake()
-    if(isGameOver())
+    if(isGameOver()){
+        gameOverSound.play()
         return
+    }
     play()
     setTimeout(loop, 1000/v.speed)
 }
@@ -32,6 +36,7 @@ function play(){
     checkAppleCollision()
     drawApple()
     drawSnake()
+    v.scoreText.innerHTML = `SCORE: ${score}` 
 }
 
 function clearScreen() {
@@ -69,6 +74,7 @@ function checkAppleCollision(){
         appleY = Math.floor(Math.random() * v.snakeSize)
         tailLength++
         eatSound.play()
+        score++
     }
 }
 
@@ -111,28 +117,28 @@ function ClickArrows(event){
 
 function swipeScreen(){
     // up
-    if(endTouchY < startTouchY && (startTouchX - endTouchX < boundary || startTouchX - endTouchX < -boundary )){
+     if(startTouchY-endTouchY > 0 && Math.abs(startTouchX-endTouchX)<boundary){
         if(yVelocity=== 1)
             return
         yVelocity = -1
         xVelocity = 0
     }
     // down
-    else if(endTouchY > startTouchY && (startTouchX - endTouchX < boundary || startTouchX - endTouchX < -boundary )){
+    else if(startTouchY-endTouchY < 0 && Math.abs(startTouchX-endTouchX)<boundary){
         if(yVelocity=== -1)
             return
         yVelocity = 1
         xVelocity = 0
     }
     // right
-    else if(endTouchX > startTouchX && (-(startTouchY - endTouchY) < -boundary || startTouchY - endTouchY < boundary )){
+    else if(startTouchX-endTouchX < 0 && Math.abs(startTouchY-endTouchY)<boundary){
         if(xVelocity=== -1)
             return
             yVelocity = 0
             xVelocity = 1
     }
     // left
-    else if(endTouchX < startTouchX &&(startTouchY - endTouchY < boundary || startTouchY - endTouchY < -boundary )){
+    else if(startTouchX-endTouchX > 0 && Math.abs(startTouchY-endTouchY)<boundary){
         if(xVelocity=== 1)
             return
             yVelocity = 0
