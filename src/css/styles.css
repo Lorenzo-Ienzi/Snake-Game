@@ -68,3 +68,18 @@ h1{
         place-items: center;
     }
 }
+@media (min-width: 150px) and (max-width: 450px){
+    #area{
+        transform: scale(0.7);
+    }
+}
+@media (min-width: 451px) and (max-width: 768px){
+    #area{
+        transform: scale(1);
+    }
+}
+@media (min-width: 769px) {
+    #area{
+        transform: scale(1.2);
+    }
+}
